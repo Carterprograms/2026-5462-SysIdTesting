@@ -30,6 +30,7 @@ import frc.robot.subsystems.ShooterSys;
 import frc.robot.commands.drivetrain.AutoAimCmd;
 import frc.robot.subsystems.IntakeSys;
 import frc.robot.commands.functions.IntakeCmd;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class RobotContainer {
     
@@ -109,9 +110,14 @@ public class RobotContainer {
         driverController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.triggerPressedThreshhold)
            .whileTrue(new LockCmd(swerveSys));
 
-    driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
+    /*driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
     driverController.a().whileTrue(new IntakeCmd(intakeSys));
-    driverController.b().whileTrue(new AutoShootCmd(shooterSys));
+    driverController.b().whileTrue(new AutoShootCmd(shooterSys));*/
+
+    driverController.a().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    driverController.b().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    driverController.y().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    driverController.x().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {
